@@ -30,6 +30,8 @@ skill, so the vocabulary stays meaningful.
 | `openclaw` | OpenClaw CLI available (runtime-specific commands) |
 | `photon` | A Photon/Spectrum project (iMessage line + keys) |
 | `display` | A real screen / visible GUI (not headless-only) |
+| `terminal` | Can run shell commands non-interactively |
+| `git_token` | A GitHub token with write/PR access to the registry (for contributing skills) |
 
 ## `runtime:` vs `requires:`
 
