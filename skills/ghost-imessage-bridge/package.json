@@ -1,0 +1,14 @@
+{
+  "name": "ghost-imessage-bridge",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Connect any Hermes (Ghost) agent to iMessage via Photon/Spectrum. Add two keys, run.",
+  "scripts": {
+    "start": "node index.mjs",
+    "stop": "pkill -f index.mjs || true"
+  },
+  "dependencies": {
+    "spectrum-ts": "^7.0.0"
+  }
+}

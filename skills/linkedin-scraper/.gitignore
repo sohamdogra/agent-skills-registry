@@ -1,0 +1,9 @@
+# Personal / runtime files — never commit or share these
+linkedin_session.json
+scout_progress.json
+scout_results.json
+linkedin_scout_results.xlsx
+linkedin_scout_results*.xlsx
+*.tmp.xlsx
+debug/
+__pycache__/

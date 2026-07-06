@@ -1,0 +1,16 @@
+{
+  "name": "linkedin-scraper",
+  "version": "1.0.0",
+  "description": "Scan the People tab of LinkedIn company pages to find employees who share mutual connections with the logged-in user, classify them as warm-intro leads, and export the results to Excel.",
+  "runtime": "python",
+  "entry": "scripts/main.py",
+  "skill": "SKILL.md",
+  "install": [
+    "pip install -r requirements.txt",
+    "playwright install chromium"
+  ],
+  "commands": {
+    "login": "python scripts/main.py --login",
+    "scan": "python scripts/main.py <company_url> [more_urls...]"
+  }
+}

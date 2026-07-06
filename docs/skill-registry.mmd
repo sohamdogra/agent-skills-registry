@@ -1,0 +1,48 @@
+flowchart LR
+    subgraph GH["GitHub · agent-skills-registry — private, single source of truth"]
+        direction TB
+        README["📖 README index<br/><i>what our agents already know</i>"]
+        S1["SKILL.md · daily AI-news desk<br/>requires: [browser]"]
+        S2["SKILL.md · inbound-lead monitor<br/>requires: [browser]"]
+        S3["SKILL.md · capability-gated<br/>requires: [cv, hermes]"]
+        MAIN(["🔒 main — protected · PR + maintainer review"])
+        README --- S1
+        S1 --- S2
+        S2 --- S3
+        S3 --- MAIN
+    end
+
+    HUB(( ))
+
+    subgraph V1["🖥️ Agent A · Hermes"]
+        direction TB
+        L1["skills/ load path"]
+        E1["🔑 secrets — stay here"]
+    end
+    subgraph V2["🖥️ OpenClaw"]
+        direction TB
+        L2["skills/ load path"]
+        E2["🔑 secrets — stay here"]
+    end
+    subgraph V3["🖥️ New agent"]
+        direction TB
+        L3["skills/ load path"]
+        E3["🔑 secrets — stay here"]
+    end
+
+    MAIN --> HUB
+    HUB -->|"git pull · cron / webhook"| L1
+    HUB -->|"git pull"| L2
+    HUB -->|"git pull — onboards with all prior know-how"| L3
+    L1 -.->|"skill improves → PR to teach"| MAIN
+
+    classDef repo fill:#0d1117,stroke:#58a6ff,color:#e6edf3;
+    classDef secret fill:#2d1215,stroke:#f85149,color:#ffdcd7;
+    classDef main fill:#1c2333,stroke:#d29922,color:#f2cc60;
+    classDef load fill:#132a1a,stroke:#3fb950,color:#e6edf3;
+    classDef hub fill:#0d1117,stroke:#0d1117,color:#0d1117;
+    class README,S1,S2,S3 repo;
+    class E1,E2,E3 secret;
+    class MAIN main;
+    class L1,L2,L3 load;
+    class HUB hub;

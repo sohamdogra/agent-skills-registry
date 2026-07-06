@@ -1,0 +1,17 @@
+{
+  "name": "ghost-imessage-bridge",
+  "version": "1.0.0",
+  "description": "Connect a Ghost/Hermes agent to iMessage via Photon/Spectrum, with per-contact Hermes sessions.",
+  "runtime": "hermes",
+  "requires": ["hermes", "node", "photon"],
+  "entry": "index.mjs",
+  "skill": "SKILL.md",
+  "install": [
+    "bash setup.sh <PROJECT_ID> <PROJECT_SECRET>"
+  ],
+  "commands": {
+    "start": "bash setup.sh <PROJECT_ID> <PROJECT_SECRET>",
+    "logs": "tail -f bridge.log",
+    "stop": "bash stop.sh"
+  }
+}

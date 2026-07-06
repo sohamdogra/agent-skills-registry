@@ -1,0 +1,32 @@
+# Secrets — NEVER commit these. Playbooks travel; credentials stay per-VM.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+deploy-key*
+*_session.json
+linkedin_session.json
+sessions.json
+cookies.json
+
+# Skill runtime state / caches (per-VM, not shared)
+scout_results.json
+scout_progress.json
+bridge.log
+debug/
+.linkedin-scraper/
+
+# Dependency + build artifacts
+node_modules/
+__pycache__/
+*.pyc
+venv/
+.venv/
+.next/
+dist/
+build/
+
+# OS / editor
+.DS_Store
+Thumbs.db

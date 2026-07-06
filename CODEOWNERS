@@ -1,0 +1,10 @@
+# Maintainers who must review before a skill reaches `main`.
+# GitHub enforces this when the repo has branch protection with
+# "Require review from Code Owners" enabled on `main`.
+
+# Everything in the repo requires a maintainer review by default.
+*       @sohamdogra
+
+# Add per-skill owners as the registry grows, e.g.:
+# skills/ai-news-daily/         @a-maintainer
+# skills/ghost-imessage-bridge/ @soham
