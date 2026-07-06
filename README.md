@@ -15,6 +15,9 @@ Every skill is a folder under [`skills/`](skills/) containing a `SKILL.md` (the 
 plus whatever scripts it needs. An agent "has" a skill when that folder sits in the
 directory its runtime loads skills from. This repo is the master copy every VM syncs from.
 
+**New here?** → [`ONBOARDING.md`](ONBOARDING.md) — add your agent in a couple of commands
+(Hermes and OpenClaw).
+
 ## Skill index
 
 | Skill | What it does | Runtime | `requires:` | Status |
