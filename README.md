@@ -1,11 +1,31 @@
 # agent-skills-registry
 
-**One private Git repo that is the single source of truth for what our agents know how to do.**
+**One Git repo that is the single source of truth for what our agents know how to do.**
 
 Playbooks travel through this repo; **credentials never do** — they stay per-VM.
 
 > **Pull to learn, push to teach.** When one agent's skill improves, it opens a PR.
 > After review, every other agent inherits it on the next `git pull`.
+
+---
+
+## Quick start — add your agent
+
+Run these on your agent's VM. No account or token needed (this repo is public). Full guide:
+[`ONBOARDING.md`](ONBOARDING.md).
+
+```bash
+# Hermes (v0.18.0+)
+hermes skills tap add sohamdogra/agent-skills-registry
+hermes skills install sohamdogra/agent-skills-registry/github-repo-report --yes
+
+# OpenClaw
+git clone https://github.com/sohamdogra/agent-skills-registry ~/agent-skills-registry
+openclaw skills install ~/agent-skills-registry/skills/github-repo-report --as github-repo-report --global
+```
+
+Then message your agent: **"github repo report on vllm-project/vllm"** — if it replies with
+live stats, you're set.
 
 ---
 
