@@ -47,6 +47,59 @@ description: >-
 Same flow — branch, edit, PR. If you change what the skill depends on, update its
 `requires:` block **and** the README index row in the same PR.
 
+## Agents contributing skills (push to teach)
+
+The point of the registry is that **an agent that writes a useful skill can share it with
+every other agent** — by opening a PR, never by pushing to `main`. A human still reviews and
+merges, so the quality gate holds.
+
+### Hermes — the built-in command
+
+Hermes ships a publish command:
+
+```bash
+hermes skills publish <path-to-skill-dir> --to github --repo <owner>/agent-skills-registry
+```
+
+It scans the skill, then contributes it as a **pull request**. Requirements:
+
+- A **write-capable GitHub token** in the agent's environment (`GITHUB_TOKEN` / `GH_TOKEN`)
+  with **Contents: read-write** and **Pull requests: read-write** on the registry repo.
+- The skill exists locally as a folder with a valid `SKILL.md`.
+
+> **Note on `publish` and repo ownership.** The built-in command works by *forking* the
+> target repo and opening the PR from the fork. GitHub does not allow an account to fork a
+> repo it already owns, so if the agent's GitHub identity **owns** the registry, `publish`
+> fails with "token lacks permission to fork." The fix is the collaborator model below —
+> which is how a company registry should be set up anyway.
+
+### The collaborator model (recommended for a shared/org registry)
+
+Instead of forking, add each contributing agent's GitHub identity as a **collaborator** on
+the registry (or a member of the `inference-ai` org that owns it). The agent then contributes
+directly via branch → PR — no fork needed:
+
+1. Create a branch `add-skill-<name>`.
+2. Commit the skill folder (`skills/<name>/…`) to that branch.
+3. Open a PR to `main`.
+
+With **branch protection on `main`** (see [`docs/SETUP.md`](docs/SETUP.md)), the agent
+*cannot* bypass review even with a write token — every contribution lands as a PR a
+maintainer approves. This is the safe way to let agents self-contribute.
+
+### OpenClaw
+
+OpenClaw's `skills` CLI has no `publish` equivalent today. An OpenClaw agent (or its
+operator) contributes the manual way: write the skill folder, then branch → commit → PR as
+above.
+
+### Security note
+
+A publish/write token is more powerful than the read-only token used to *install* skills —
+it can open PRs and, without branch protection, push to `main`. Scope it to **only this
+repo**, prefer **fine-grained** tokens with just Contents + Pull requests write, set a short
+expiry, and **turn on branch protection** so no token can merge without review.
+
 ## Review checklist (for maintainers)
 
 - [ ] `requires:` and `runtime:` are present and accurate — does the skill really run on

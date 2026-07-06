@@ -101,6 +101,31 @@ on the VM.
 
 ---
 
+## Protecting `main` (branch protection)
+
+The whole governance model — "nobody commits to `main`, everything is a reviewed PR" — is
+only *enforced* if `main` is protected. Otherwise it's just convention, and any write token
+(including an agent's publish token) could push straight to `main`.
+
+Turn it on once, in the GitHub UI:
+
+1. Go to the repo → **Settings** → **Branches** (left sidebar).
+2. Under **Branch protection rules**, click **Add branch ruleset** (or **Add rule**).
+3. **Branch name pattern:** `main`.
+4. Enable:
+   - ✅ **Require a pull request before merging** — and set **Require approvals: 1**.
+   - ✅ **Require review from Code Owners** (uses [`CODEOWNERS`](../CODEOWNERS)).
+   - ✅ **Do not allow bypassing the above settings** (so even admins/tokens can't skip it).
+   - Optional: ✅ **Require status checks to pass** if you later add CI.
+5. **Save changes.**
+
+After this, an agent with a write token can *open* PRs but **cannot merge to `main`** without
+a maintainer approving — which is exactly the safety property that makes agent
+self-contribution safe. See the agent-contribution section in
+[`../CONTRIBUTING.md`](../CONTRIBUTING.md).
+
+---
+
 ## Notes
 
 - **Secrets stay on the VM** — in the runtime's environment (`~/.hermes/.env`, etc.), never
