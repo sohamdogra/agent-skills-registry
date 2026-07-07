@@ -16,8 +16,10 @@ Every figure is current and links back to the real repo — not recalled from me
 
 ## When to use
 
-When a person asks about a **GitHub repo** — its popularity, activity, or stats
-(e.g. "how active is vllm-project/vllm?", "give me stats on huggingface/transformers").
+When a person asks about a **GitHub repo** — its popularity, activity, stats,
+**primary language**, or **license**
+(e.g. "how active is vllm-project/vllm?", "give me stats on huggingface/transformers",
+"what language is X written in?", "what license does X use?").
 
 ## How to run it
 
