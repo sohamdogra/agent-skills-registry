@@ -3,21 +3,27 @@ name: ai-news-daily
 runtime: neutral
 requires: [code_execution]
 description: >-
-  Produce a short digest of today's top AI/ML news, pulled live from Hacker News (no API key).
-  Use when someone asks for the AI news, an AI news digest/briefing, or "what's happening in
-  AI today". Runs a bundled script that fetches real, current stories with links.
+  Produce a short digest of today's top news on any topic, pulled live from Hacker News (no
+  API key). Defaults to AI/ML but accepts a custom topic argument (e.g. "AI agents OR RAG",
+  "rust", "climate tech"), so it works for any subject — use when someone asks for the AI
+  news, a news digest/briefing on a topic, or "what's happening in <X> today". Runs a bundled
+  script that fetches real, current stories with links.
 ---
 
 # AI News Daily
 
-Fetches **today's top AI/ML stories from Hacker News** and returns a short, linked digest.
-The data is pulled live from a public API, so every item is real and independently
-verifiable — this is not the model recalling headlines from memory.
+Fetches **today's top stories from Hacker News** and returns a short, linked digest.
+Defaults to **AI/ML**, but you can pass a **custom topic argument** to get a digest on any
+subject (see "How to run it" below). The data is pulled live from a public API, so every
+item is real and independently verifiable — this is not the model recalling headlines from
+memory.
 
 ## When to use
 
 When a person asks for **the AI news**, an **AI news digest / briefing**, or **"what's
-happening in AI today."**
+happening in AI today"** — and, because it takes a **custom topic argument**, also when they
+ask for a news digest on **any other subject** ("give me today's news on rust / climate tech /
+robotics").
 
 ## How to run it
 
@@ -27,8 +33,17 @@ happening in AI today."**
    python3 scripts/fetch_news.py
    ```
 
-   Optionally pass a custom topic query, e.g.
-   `python3 scripts/fetch_news.py "AI agents OR RAG"`.
+   **Custom topic:** pass any query as the first argument to digest a different subject
+   instead of the AI/ML default. The query supports HN Algolia search syntax (OR, quotes),
+   e.g.:
+
+   ```bash
+   python3 scripts/fetch_news.py "AI agents OR RAG"
+   python3 scripts/fetch_news.py "rust"
+   python3 scripts/fetch_news.py "\"climate tech\" OR \"clean energy\""
+   ```
+
+   With no argument it defaults to `AI OR LLM OR "machine learning"`.
 
 2. The script prints JSON like:
 
