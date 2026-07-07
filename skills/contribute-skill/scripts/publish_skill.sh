@@ -15,6 +15,7 @@ REPO="sohamdogra/agent-skills-registry"
 API="https://api.github.com"
 
 SKILL_DIR="${1:-}"
+SKILL_DIR="${SKILL_DIR%/}"   # normalize: strip any trailing slash so relative paths compute correctly
 if [ -z "$SKILL_DIR" ] || [ ! -f "$SKILL_DIR/SKILL.md" ]; then
   echo "ERROR: pass a skill directory containing SKILL.md. Got: '$SKILL_DIR'" >&2
   exit 1

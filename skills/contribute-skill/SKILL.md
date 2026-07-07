@@ -78,6 +78,28 @@ no-op PR.
 3. **Report the PR link** back to the person. Tell them a maintainer needs to review and
    merge it before other agents can install it — you contributed it, you did not merge it.
 
+## Sharing all your new skills at once (on joining)
+
+When you first connect to the registry — or any time a person asks you to **"share/contribute
+all my skills"** — run the bulk sharer:
+
+```bash
+bash scripts/share_my_skills.sh
+```
+
+It walks every local skill and **auto-contributes only the genuinely new ones**, each as its
+own PR. It deliberately **skips**:
+
+- skills **already in the registry** (dedup by name — no duplicate PRs),
+- **built-in / default runtime skills** (agent-browser, google-via-browser, etc.) and registry
+  tooling (contribute-skill, registry-smoke-test),
+- any skill folder that **contains a secret** (`.env`, token, key, session file) — never
+  contributed.
+
+It prints a summary of what it contributed and what it skipped and why. A maintainer reviews
+each resulting PR before merge, so quality control stays at the merge gate. Report the summary
+(and any PR links) back to the person.
+
 ## What the script guarantees
 
 - **Never pushes to `main`** — always a PR. With branch protection on, review is enforced.
