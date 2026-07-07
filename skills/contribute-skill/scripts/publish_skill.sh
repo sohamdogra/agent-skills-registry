@@ -33,7 +33,6 @@ fi
 # Derive skill name from the SKILL.md frontmatter (name:) or the folder name.
 NAME=$(grep -m1 -E '^name:' "$SKILL_DIR/SKILL.md" | sed -E 's/^name:[[:space:]]*//' | tr -d '"'"'"' \r')
 [ -z "$NAME" ] && NAME=$(basename "$SKILL_DIR")
-BRANCH="add-skill-$NAME"
 
 auth=(-H "Authorization: token $GITHUB_TOKEN" -H "Accept: application/vnd.github+json")
 
@@ -43,6 +42,15 @@ echo "Publishing skill '$NAME' to $REPO as a pull request..."
 BASE_SHA=$(curl -s "${auth[@]}" "$API/repos/$REPO/git/ref/heads/main" | grep -o '"sha": *"[a-f0-9]\{40\}"' | head -1 | grep -o '[a-f0-9]\{40\}')
 [ -z "$BASE_SHA" ] && { echo "ERROR: could not read main (token lacks access to $REPO?)" >&2; exit 1; }
 
+# Detect add-vs-update: does this skill already exist on main?
+if curl -s -o /dev/null -w '%{http_code}' "${auth[@]}" \
+     "$API/repos/$REPO/contents/skills/$NAME/SKILL.md?ref=main" | grep -q '^200$'; then
+  MODE="Update"; VERB="update"
+else
+  MODE="Add"; VERB="add"
+fi
+BRANCH="$VERB-skill-$NAME"
+
 # 2. create branch (ignore 'already exists')
 curl -s -o /dev/null "${auth[@]}" -X POST "$API/repos/$REPO/git/refs" \
   -d "{\"ref\":\"refs/heads/$BRANCH\",\"sha\":\"$BASE_SHA\"}" || true
@@ -51,18 +59,25 @@ curl -s -o /dev/null "${auth[@]}" -X POST "$API/repos/$REPO/git/refs" \
 find "$SKILL_DIR" -type f | while read -r f; do
   rel="${f#"$SKILL_DIR"/}"
   b64=$(base64 -w0 "$f")
-  # look up existing file sha on the branch (for updates)
+  # look up existing file sha on the branch (required to update an existing file)
   existing=$(curl -s "${auth[@]}" "$API/repos/$REPO/contents/skills/$NAME/$rel?ref=$BRANCH" | grep -o '"sha": *"[a-f0-9]\{40\}"' | head -1 | grep -o '[a-f0-9]\{40\}' || true)
   shaline=""
   [ -n "$existing" ] && shaline=",\"sha\":\"$existing\""
   curl -s -o /dev/null "${auth[@]}" -X PUT "$API/repos/$REPO/contents/skills/$NAME/$rel" \
-    -d "{\"message\":\"Add $NAME skill: $rel\",\"content\":\"$b64\",\"branch\":\"$BRANCH\"$shaline}"
+    -d "{\"message\":\"$MODE $NAME skill: $rel\",\"content\":\"$b64\",\"branch\":\"$BRANCH\"$shaline}"
   echo "  committed skills/$NAME/$rel"
 done
 
 # 4. open the PR (capture the URL)
+if [ "$MODE" = "Update" ]; then
+  TITLE="Improve $NAME skill (updated by an agent)"
+  BODY="An agent improved this existing skill and contributed the change to the shared registry via the contribute-skill playbook. A maintainer reviews and merges; on merge every agent picks up the improved version with \`hermes skills update\`."
+else
+  TITLE="Add $NAME skill (authored by an agent)"
+  BODY="This skill was authored on an agent's VM and contributed to the shared registry via the contribute-skill playbook. A maintainer reviews and merges; on merge every agent can install it."
+fi
 PR=$(curl -s "${auth[@]}" -X POST "$API/repos/$REPO/pulls" \
-  -d "{\"title\":\"Add $NAME skill (authored by an agent)\",\"head\":\"$BRANCH\",\"base\":\"main\",\"body\":\"This skill was authored on an agent's VM and contributed to the shared registry via the contribute-skill playbook. A maintainer reviews and merges; on merge every agent can install it.\"}")
+  -d "{\"title\":\"$TITLE\",\"head\":\"$BRANCH\",\"base\":\"main\",\"body\":\"$BODY\"}")
 
 URL=$(echo "$PR" | grep -o '"html_url": *"[^"]*/pull/[0-9]*"' | head -1 | sed -E 's/.*"(https[^"]*)"/\1/')
 if [ -n "$URL" ]; then

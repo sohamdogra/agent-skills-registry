@@ -16,7 +16,25 @@ other agent can install it after a maintainer merges.
 
 ## When to use
 
-When a person asks you to **contribute / publish / share / push a skill** to the registry.
+When a person asks you to **contribute / publish / share / push a skill** to the registry —
+either a **new** skill you authored, or an **improvement to an existing** skill in the
+registry. The publisher detects which case it is and titles the PR accordingly
+("Add …" vs "Improve …").
+
+### Improving an existing skill vs. saving to memory
+
+If a user tells you to fix or improve a skill, first decide **where the change belongs**:
+
+- **A general improvement** everyone should get (clearer instructions, a better step, a bug
+  in the shared script) → edit the skill and open a PR with this playbook. Every agent gets
+  it after merge.
+- **An agent-specific note** (a workaround for *your* credentials, VM, or environment) →
+  put it in **your own memory**, not the shared skill. Don't pollute a shared skill with a
+  change that only helps you.
+
+When in doubt, ask the user which they mean. And **before editing, read the skill's current
+version in the registry** — if the improvement is already present, say so and don't open a
+no-op PR.
 
 ## Prerequisites (already set up on this VM)
 
@@ -30,18 +48,32 @@ When a person asks you to **contribute / publish / share / push a skill** to the
 
 ## How to contribute a skill
 
+**To add a NEW skill:**
+
 1. **Author the skill locally first.** Create a folder with a valid `SKILL.md`
    (frontmatter: `name`, `runtime`, `requires`, `description`) plus any `scripts/`. For
    example under `/root/authored-skills/<name>/`.
 
-2. **Run the publisher** with the path to that folder:
+**To IMPROVE an existing skill:**
+
+1. **Get the current version first**, so you edit the real file (not a stale copy):
+   ```bash
+   git clone https://github.com/sohamdogra/agent-skills-registry /root/registry-clone 2>/dev/null || (cd /root/registry-clone && git pull)
+   ```
+   Copy `skills/<name>/` from the clone to a working folder, apply your improvement there,
+   and confirm the change is a real diff (not already present).
+
+**Then, for either case:**
+
+2. **Run the publisher** with the path to the skill folder:
 
    ```bash
-   bash scripts/publish_skill.sh /root/authored-skills/<name>
+   bash scripts/publish_skill.sh /path/to/<name>
    ```
 
-   The script creates a branch `add-skill-<name>`, commits the skill under
-   `skills/<name>/`, and opens a PR to `main`. It prints the PR URL.
+   The script auto-detects add vs. update: it commits the skill under `skills/<name>/`,
+   opens a PR to `main`, and titles it "Add …" for a new skill or "Improve …" for an edit.
+   It prints the PR URL.
 
 3. **Report the PR link** back to the person. Tell them a maintainer needs to review and
    merge it before other agents can install it — you contributed it, you did not merge it.
