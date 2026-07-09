@@ -23,6 +23,7 @@ skill, so the vocabulary stays meaningful.
 | Token | Means the agent has… |
 |---|---|
 | `browser` | Controllable browser (Playwright/Chromium or equivalent) |
+| `code_execution` | Can run local scripts or sandboxed code snippets non-interactively |
 | `cv` | Computer-vision / screen-reading tooling (e.g. an agent's own screen-reader) |
 | `python` | Python 3.10+ available to the runtime |
 | `node` | Node.js ≥ 20.6 available to the runtime |

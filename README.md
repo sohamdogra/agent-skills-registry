@@ -47,6 +47,10 @@ directory its runtime loads skills from. This repo is the master copy every VM s
 | [ai-news-daily](skills/ai-news-daily/) | Digest of today's top AI/ML stories, pulled live from Hacker News | neutral | `code_execution` | ✅ ready |
 | [arxiv-watch](skills/arxiv-watch/) | Latest arXiv research papers on any topic, with links | neutral | `code_execution` | ✅ ready |
 | [github-repo-report](skills/github-repo-report/) | Live stats for any public GitHub repo (stars, issues, latest release) | neutral | `code_execution` | ✅ ready |
+| [coin-flip](skills/coin-flip/) | Flip a fair coin for heads/tails decisions using a local shell script | neutral | `terminal` | ✅ ready |
+| [dice-roll](skills/dice-roll/) | Roll a fair six-sided die with a bundled script | neutral | `code_execution` | ✅ ready |
+| [contribute-skill](skills/contribute-skill/) | Publish a locally authored skill to the registry through a reviewed PR | **hermes** | `terminal`, `git_token` | ✅ ready |
+| [xquik-social-automation](skills/xquik-social-automation/) | Use Xquik API and MCP surfaces for X/Twitter social research, monitoring, and approval-gated action drafts | neutral | `terminal` | ✅ ready |
 | [inbound-lead-monitor](skills/inbound-lead-monitor/) | Watch inbound channels and surface qualified leads | neutral | `browser` | 🚧 stub |
 | [registry-smoke-test](skills/registry-smoke-test/) | Trivial skill to verify the registry pipeline end to end | neutral | _(none)_ | ✅ ready |
 
@@ -88,3 +92,14 @@ per-VM setup (deploy keys, auto-sync, older-Hermes fallback) is in
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md) for how to add or change a skill, and
 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full design and diagrams.
+
+## Validate the registry
+
+Run this before opening a PR:
+
+```bash
+node scripts/validate-registry.mjs
+```
+
+It checks that every skill has frontmatter, appears in the README index, and only uses
+documented `requires:` tokens.

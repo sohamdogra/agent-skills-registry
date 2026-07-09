@@ -39,8 +39,9 @@ description: >-
 1. Create a branch: `git checkout -b add-<skill-name>`.
 2. Add `skills/<skill-name>/` with a `SKILL.md` (frontmatter above) and any scripts.
 3. Add a row to the **Skill index** table in the root [`README.md`](README.md).
-4. Confirm no secrets are staged: `git diff --cached` and check against `.gitignore`.
-5. Open a PR. A maintainer reviews it and **verifies the `requires:` block** before merge.
+4. Run `node scripts/validate-registry.mjs`.
+5. Confirm no secrets are staged: `git diff --cached` and check against `.gitignore`.
+6. Open a PR. A maintainer reviews it and **verifies the `requires:` block** before merge.
 
 ## Changing an existing skill
 
@@ -106,6 +107,7 @@ expiry, and **turn on branch protection** so no token can merge without review.
       every runtime it claims?
 - [ ] No secrets, session files, or `.env` in the diff.
 - [ ] README index row added/updated (runtime + requires columns match the frontmatter).
+- [ ] `node scripts/validate-registry.mjs` passes.
 - [ ] Playbook is self-contained: an agent could follow it without this conversation.
 - [ ] Any new capability token was added to [`docs/REQUIRES.md`](docs/REQUIRES.md) first.
 
